@@ -26,8 +26,8 @@
       "spaces",
       4
     ],
-
-    "no-console": false
+    "no-console": false,
+    "no-var-requires": false
   },
   "rulesDirectory": []
 }

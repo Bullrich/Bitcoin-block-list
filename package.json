@@ -23,8 +23,11 @@
   },
   "homepage": "https://github.com/BitwalaCareers/javier-bullrich#readme",
   "dependencies": {
+    "@types/redis": "^2.8.28",
     "concurrently": "^5.3.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "got": "^11.8.1",
+    "redis": "^3.0.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.11",
