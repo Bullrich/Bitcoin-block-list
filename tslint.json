@@ -1,0 +1,33 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-no-unused-expression-chai"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**",
+      "src/**/*.json",
+      "client/**"
+    ]
+  },
+  "jsRules": {},
+  "rules": {
+    "trailing-comma": [
+      false
+    ],
+    "quotemark": [
+      true,
+      "double",
+      "avoid-escape"
+    ],
+    "indent": [
+      true,
+      "spaces",
+      4
+    ],
+
+    "no-console": false
+  },
+  "rulesDirectory": []
+}
