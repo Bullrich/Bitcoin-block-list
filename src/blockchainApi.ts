@@ -1,5 +1,4 @@
 import got from "got"
-import redis from "redis"
 
 const baseUrl: string = "https://blockchain.info"
 
