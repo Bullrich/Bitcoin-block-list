@@ -9,6 +9,8 @@ const PORT = 8000;
 
 const chainApi: BlockchainApi = new BlockchainApi();
 
+const redisHost = process.env.REDIS_HOST;
+
 const cache: ICache = new RedisCache()
 
 
@@ -26,8 +28,11 @@ app.get("/blocks", async (req, res) => {
         return res.send(cachedBlocks)
     }
     const result = await chainApi.getChainInfo();
+    if(!result){
+        return res.sendStatus(404);
+    }
 
-    cache.setWithTimeout("blocks", result, 2);
+    cache.setWithTimeout("blocks", result, 30);
     return res.send(result);
 })
 

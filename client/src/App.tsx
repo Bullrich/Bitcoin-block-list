@@ -1,27 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Disclaimer from "./Disclaimer";
+import BlockList from "./blockList/blockList";
+
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
+import {Container} from "@material-ui/core";
+import NavBar from "./components/navBar";
+import BlockDetail from "./blockList/BlockDetail";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Disclaimer/>
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <NavBar/>
+            <Container>
+                <Router>
+                    <Switch>
+                        <Route exact path="/:hash" render={props =>
+                            <BlockDetail {...props} />}
+                        />
+
+                        <Route path="/" component={BlockList}/>
+                    </Switch>
+                </Router>
+            </Container>
+        </div>
+    );
 }
 
 export default App;
