@@ -1,0 +1,22 @@
+version: "3"
+services:
+  front:
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    build: client
+    depends_on:
+      - api
+  api:
+    container_name: blockapi
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - "8000:8000"
+    build: .
+    depends_on:
+      - redis
+  redis:
+    restart: unless-stopped
+    image: redis

@@ -6,7 +6,7 @@ import {convertApiBlock} from "./blockchainApi/blockData";
 
 const app = express();
 
-app.set('json spaces', 4);
+app.set("json spaces", 4);
 
 const PORT = 8000;
 
