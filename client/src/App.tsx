@@ -1,13 +1,7 @@
 import React from 'react';
 import './App.css';
 import BlockList from "./blockList/blockList";
-
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Container} from "@material-ui/core";
 import NavBar from "./components/navBar";
 import BlockDetail from "./blockList/BlockDetail";

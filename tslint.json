@@ -26,6 +26,9 @@
       "spaces",
       4
     ],
+    "variable-name": [
+      "allow-trailing-underscore"
+    ],
     "no-console": false,
     "no-var-requires": false
   },

@@ -9,3 +9,8 @@ export interface BlockDefinition {
     main_chain: boolean
 }
 
+export  interface ChainData{
+    size:number;
+    index: number;
+    previous_hash:string;
+}

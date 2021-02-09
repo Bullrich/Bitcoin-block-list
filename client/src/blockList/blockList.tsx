@@ -1,35 +1,28 @@
-import {List, ListItem, Divider, ListItemText} from "@material-ui/core";
-import React, {Component} from "react";
-import BlockData, {BlockDefinition} from "./BlockData";
+import {Divider, List, ListItem, ListItemText} from "@material-ui/core";
+import React from "react";
+import {BlockDefinition} from "./BlockData";
 import moment from 'moment'
-import { History } from "history";
 import {RouteComponentProps, withRouter} from "react-router";
+import {fetchBlocks} from "../network/dataFetcher";
+import {shortenHash} from "../utils/utils";
 
-interface BlockProps {
-    history: History
-}
-
-
-class BlockList extends React.Component<RouteComponentProps, { blocks: BlockDefinition[] }> {
+class BlockList extends React.Component<RouteComponentProps, { blocks: BlockDefinition[], error: boolean }> {
 
     constructor(props: any) {
         super(props);
 
-        this.state = {blocks: []}
+        this.state = {blocks: [], error: false}
     }
 
-
     componentDidMount() {
-        const apiUrl = "http://127.0.0.1:8000/blocks";
-        fetch(apiUrl)
-            .then((response) => response.json())
-            .then((data) => this.setState({blocks: (data as BlockData).blocks}));
+        fetchBlocks()
+            .then((data) => this.setState({blocks: data.blocks}))
+            .catch(e => this.setState({error: true}));
     }
 
     renderBlocks() {
         return this.state.blocks.reverse().map(({hash, height, time}) => {
-            const cleanHash = hash.replace(/^0+/, '');
-            const shortHash = cleanHash.substr(0, 5);
+            const shortHash = shortenHash(hash);
 
             return (<div key={hash}>
                 <Divider/>
@@ -55,9 +48,9 @@ class BlockList extends React.Component<RouteComponentProps, { blocks: BlockDefi
         )
     }
 
-    timeSince(date:number) {
+    timeSince(date: number) {
         return moment.unix(date).fromNow();
     }
 }
 
-export default withRouter( BlockList);
+export default withRouter(BlockList);

@@ -1,17 +1,20 @@
 import express from "express";
-import BlockchainApi from "./blockchainApi";
+import BlockchainApi from "./blockchainApi/blockchainApi";
 import ICache from "./cache/ICache";
 import RedisCache from "./cache/redisCache";
+import {convertApiBlock} from "./blockchainApi/blockData";
 
 const app = express();
-const PORT = 8000;
 
+app.set('json spaces', 4);
+
+const PORT = 8000;
 
 const chainApi: BlockchainApi = new BlockchainApi();
 
 const redisHost = process.env.REDIS_HOST;
 
-const cache: ICache = new RedisCache()
+const cache: ICache = new RedisCache(redisHost);
 
 
 app.use((req, res, next) => {
@@ -33,7 +36,7 @@ app.get("/blocks", async (req, res) => {
     }
 
     cache.setWithTimeout("blocks", result, 30);
-    return res.send(result);
+    return res.json(result);
 })
 
 app.get("/block/:chain", async (req, res) => {
@@ -45,12 +48,16 @@ app.get("/block/:chain", async (req, res) => {
         }
 
         const chainData = await chainApi.getBlockInfo(chainId);
-        if (chainData === "") {
+        if (!chainData) {
             return res.sendStatus(404)
         }
 
-        cache.setWithTimeout(`block-${chainId}`, chainData, 60);
-        return res.send(chainData);
+        const returnObject = convertApiBlock(chainData);
+        const objectJson = JSON.stringify(returnObject);
+        console.log(returnObject);
+
+        cache.setWithTimeout(`block-${chainId}`, objectJson, 60 * 60 * 24);
+        res.json(returnObject);
     }
 
     return res.send("Error")
