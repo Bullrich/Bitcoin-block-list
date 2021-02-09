@@ -6,12 +6,12 @@ import {RouteComponentProps, withRouter} from "react-router";
 import {fetchBlocks} from "../network/dataFetcher";
 import {shortenHash} from "../utils/utils";
 
-class BlockList extends React.Component<RouteComponentProps, { blocks: BlockDefinition[], error: boolean }> {
+class BlockList extends React.Component<RouteComponentProps, { blocks?: BlockDefinition[], error: boolean }> {
 
     constructor(props: any) {
         super(props);
 
-        this.state = {blocks: [], error: false}
+        this.state = {error: false}
     }
 
     componentDidMount() {
@@ -21,6 +21,22 @@ class BlockList extends React.Component<RouteComponentProps, { blocks: BlockDefi
     }
 
     renderBlocks() {
+        if (this.state.error) {
+            return (
+                <ListItem>
+                    <ListItemText primary={"Failed to fetch blocks!"}/>
+                </ListItem>
+            )
+        }
+
+        if (!this.state.blocks) {
+            return (
+                <ListItem>
+                    <ListItemText primary={"Loading blocks..."}/>
+                </ListItem>
+            )
+        }
+
         return this.state.blocks.reverse().map(({hash, height, time}) => {
             const shortHash = shortenHash(hash);
 
@@ -43,7 +59,7 @@ class BlockList extends React.Component<RouteComponentProps, { blocks: BlockDefi
                     <ListItemText primary="Time"/>
                     <ListItemText primary="Hash"/>
                 </ListItem>
-                {this.state.blocks !== null ? this.renderBlocks() : ""}
+                {this.renderBlocks()}
             </List>
         )
     }
