@@ -17,7 +17,6 @@ function App() {
                         <Route exact path="/:hash" render={props =>
                             <BlockDetail {...props} />}
                         />
-
                         <Route path="/" component={BlockList}/>
                     </Switch>
                 </Router>

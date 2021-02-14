@@ -2,13 +2,14 @@ import express from "express";
 import BlockchainApi from "./blockchainApi/blockchainApi";
 import ICache from "./cache/ICache";
 import RedisCache from "./cache/redisCache";
-import {convertApiBlock} from "./blockchainApi/blockData";
+import { convertApiBlock } from "./blockchainApi/blockData";
+import path from "path";
 
 const app = express();
 
 app.set("json spaces", 4);
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 const chainApi: BlockchainApi = new BlockchainApi();
 
@@ -23,15 +24,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get("/", (req, res) => res.json({message: "Everything ok!"}));
-
 app.get("/blocks", async (req, res) => {
     const cachedBlocks = await cache.get("blocks");
     if (cachedBlocks) {
         return res.send(cachedBlocks)
     }
     const result = await chainApi.getChainInfo();
-    if(!result){
+    if (!result) {
         return res.sendStatus(404);
     }
 
@@ -62,6 +61,9 @@ app.get("/block/:chain", async (req, res) => {
 
     return res.send("Error")
 })
+
+
+app.use("/", express.static("client/build"));
 
 app.listen(PORT, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);

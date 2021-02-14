@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "heroku-prebuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ./client ./client && npm run build --prefix ./client",
     "build": "tsc",
     "prestart": "npm run build",
     "start": "nodemon src/index.ts",
