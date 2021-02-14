@@ -1,7 +1,7 @@
 import BlockData, {ChainData} from "../blockList/BlockData";
 
 // url used as the server is not deployed somewhere else
-const url = `http://127.0.0.1:8000`
+const url = `${window.location.protocol}//${window.location.hostname}`;
 
 export async function fetchBlocks(): Promise<BlockData | never> {
     return fetchApi<BlockData>("blocks");

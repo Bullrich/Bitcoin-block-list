@@ -1,4 +1,7 @@
 /.idea
-/client
 /dist
-/node_modules
+**/build
+**/node_modules
+.dockerignore
+Dockerfile
+docker*

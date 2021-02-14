@@ -1,6 +1,7 @@
 import express from "express";
 import BlockchainApi from "./blockchainApi/blockchainApi";
 import ICache from "./cache/ICache";
+import LocalCache from "./cache/LocalCache"
 import RedisCache from "./cache/redisCache";
 import { convertApiBlock } from "./blockchainApi/blockData";
 import path from "path";
@@ -15,7 +16,14 @@ const chainApi: BlockchainApi = new BlockchainApi();
 
 const redisHost = process.env.REDIS_HOST;
 
-const cache: ICache = new RedisCache(redisHost);
+
+let cache: ICache;
+
+if (redisHost) {
+    cache = new RedisCache(redisHost);
+} else {
+    cache = new LocalCache();
+}
 
 
 app.use((req, res, next) => {
